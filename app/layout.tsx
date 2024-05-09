@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import store from "@/redux/store";
 import Header from "@/components/Header";
 import { usePathname, useRouter } from "next/navigation";
+import Footer from "@/components/Footer";
 // import "@radix-ui/themes/styles.css";
 // import '@radix-ui/themes/layout/tokens.css';
 // import '@radix-ui/themes/layout/components.css';
@@ -24,20 +25,23 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-background font-sans antialiased ",
           inter.variable
         )}>
-        <Provider store={store}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-            enableColorScheme>
-            {!pathName.includes("auth") && <Header />}
-            {children}
-          </ThemeProvider>
-        </Provider>
+        <div id="layout">
+          <Provider store={store}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+              enableColorScheme>
+              {!pathName.includes("auth") && <Header />}
+              {children}
+              {<Footer />}
+            </ThemeProvider>
+          </Provider>
+        </div>
       </body>
     </html>
   );

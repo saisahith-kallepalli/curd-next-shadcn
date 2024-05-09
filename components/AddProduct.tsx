@@ -29,6 +29,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
 export default function AddProduct() {
+  
   const dispatch = useDispatch();
   const params = useParams();
   const router = useRouter();

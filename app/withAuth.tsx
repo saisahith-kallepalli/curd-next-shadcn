@@ -1,11 +1,21 @@
 "use client";
+import { updateCSSVariables } from "@/colors/updateColor";
+import { selectColor } from "@/redux/slices/themeColors";
+import { RootState } from "@/redux/store";
 import { getCookie, hasCookie } from "cookies-next";
 import { cookies } from "next/headers";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function withAuth(WrappedComponent: React.ComponentType) {
   return (props: any) => {
+    const selector = useSelector((state: RootState) => selectColor(state));
+
+    useEffect(() => {
+      updateCSSVariables(selector.themeColor);
+    }, [selector.themeColor]);
+
     const router = useRouter();
     const isAuthenticated = (): boolean => {
       return hasCookie("userId");

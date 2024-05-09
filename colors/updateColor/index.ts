@@ -1,15 +1,22 @@
-export const updateCSSVariables = (isDark: boolean, colorObject: any) => {
-  const root = document.documentElement;
-
-  if (isDark) {
-    // Update variables for dark theme
-    Object.keys(colorObject.dark).forEach((color: any) => {
-      root.style.setProperty(`${color}`, colorObject[color]);
-    });
-  } else {
-    // Update variables for light theme
-    Object.keys(colorObject.light).forEach((color: any) => {
-      root.style.setProperty(`${color}`, colorObject[color]);
-    });
-  }
+export const updateCSSVariables = async (className: string) => {
+  const root = document.getElementById("layout");
+  console.log("root", root);
+  const themesColors: any[] = [
+    "zinc",
+    "slate",
+    "stone",
+    "gray",
+    "natural",
+    "red",
+    "rose",
+    "orange",
+    "green",
+    "blue",
+    "yellow",
+    "violet",
+  ];
+  await themesColors.forEach((each) => {
+    root?.classList.remove(each);
+  });
+  root?.classList.add(className);
 };

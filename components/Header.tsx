@@ -85,11 +85,11 @@ export default function Header() {
                 </DropdownMenuItem>
               );
             })}
-            <DropdownMenuItem
+            {/* <DropdownMenuItem
               className="text-transform: capitalize"
-              onClick={() => () => setTheme("rose")}>
+              onClick={() => updateCSSVariables(theme === "dark", "rose")}>
               Red
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
         <DropdownMenu>
@@ -102,7 +102,9 @@ export default function Header() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <Link href={"/settings/user"}>
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+            </Link>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={onLogout}>Logout</DropdownMenuItem>
           </DropdownMenuContent>

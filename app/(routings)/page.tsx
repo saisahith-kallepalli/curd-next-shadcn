@@ -36,14 +36,47 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeProduct, selectProducts } from "@/redux/slices/product";
 import Link from "next/link";
 import withAuth from "../withAuth";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { Model } from "@/components/Model";
 
 function Home() {
   const products = useSelector((state: RootState) => selectProducts(state));
   const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
+  const [page, setPage] = useState<number>(1);
   const dispatch = useDispatch();
+  const onHandleCloseDia = (open: boolean) => {
+    setOpen(open);
+  };
+  const handlePagination = () => {
+    if (page * 10 < products.length) {
+      setPage((p) => p + 1);
+    } else {
+      setPage((p) => (p <= 1 ? p : p - 1));
+    }
+  };
   useEffect(() => {
     console.log(products);
   }, []);
+  const pageNumbers = () => {
+    const numberPages = [];
+    for (let i = 1; i <= Math.ceil(products.length % 10) + 1; i++) {
+      numberPages.push(
+        <PaginationItem>
+          <PaginationLink href="#">{i}</PaginationLink>
+        </PaginationItem>
+      );
+    }
+    return numberPages;
+  };
   return (
     <>
       <div className="w-[90vw] m-auto my-4 flex items-center justify-between">
@@ -58,14 +91,12 @@ function Home() {
             />
           </div>
         </form>
-        <Link href={"/add-product"}>
-          <Button size="sm" className="h-8 gap-1">
-            <PlusCircle className="h-3.5 w-3.5" />
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Add Product
-            </span>
-          </Button>
-        </Link>
+        {/* <PlusCircle className="h-3.5 w-3.5" /> */}
+        <Model
+          name="Add Product"
+          open={open}
+          onHandleCloseDia={onHandleCloseDia}
+        />
       </div>
       <div className="m-auto w-[90vw]">
         <Card>
@@ -95,6 +126,7 @@ function Home() {
               </TableHeader>
               <TableBody>
                 {products
+                  .slice((page - 1) * 10, page * 10)
                   .filter((item) => item.productName.includes(search))
                   ?.map((item: Product) => (
                     <TableRow key={item.id}>
@@ -125,15 +157,23 @@ function Home() {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <Link href={`/update-product/${item.id}`}>
-                              <DropdownMenuItem>Edit</DropdownMenuItem>
-                            </Link>
+                            <DropdownMenuLabel>
+                              <Model
+                                id={item.id}
+                                name="Edit"
+                                open={open}
+                                onHandleCloseDia={onHandleCloseDia}
+                              />
+                            </DropdownMenuLabel>
+
                             <DropdownMenuItem
+                              className="mx-3 h-10 mb-2"
                               onClick={() => {
                                 dispatch(removeProduct(item.id));
                               }}>
-                              Delete
+                              <Button variant="ghost" className="">
+                                Delete
+                              </Button>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -147,6 +187,21 @@ function Home() {
             {/* <div className="text-xs text-muted-foreground">
               Showing <strong>1-10</strong> of <strong>32</strong> products
             </div> */}
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" />
+                </PaginationItem>
+                {pageNumbers()}
+
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext onClick={handlePagination} />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </CardFooter>
         </Card>
       </div>
