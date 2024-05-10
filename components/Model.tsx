@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -38,7 +39,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Ban, Check } from "lucide-react";
+import { Ban, Check, CrossIcon } from "lucide-react";
 export function Model(props: {
   id?: string;
   name: string;
@@ -83,7 +84,7 @@ export function Model(props: {
   }, []);
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={onHandleCloseDia}>
       <DialogTrigger className="w-[100%]" asChild>
         <Button
           onClick={() => onHandleCloseDia(true)}
@@ -173,9 +174,13 @@ export function Model(props: {
             </CardContent>
           </Card>
         </div>
+
         <DialogFooter>
+          {/* <Button type="button" onClick={() => onHandleCloseDia(false)}>
+            Close
+          </Button> */}
           <Button type="submit" onClick={onHandleProduct}>
-            Save changes
+            Save
           </Button>
         </DialogFooter>
       </DialogContent>

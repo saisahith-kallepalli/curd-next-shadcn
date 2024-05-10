@@ -115,4 +115,4 @@ function SignUpForm() {
     </main>
   );
 }
-export default SignUpForm;
+export default withoutAuth(SignUpForm);

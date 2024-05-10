@@ -111,4 +111,4 @@ function SignInPage() {
     </div>
   );
 }
-export default SignInPage;
+export default withoutAuth(SignInPage);
